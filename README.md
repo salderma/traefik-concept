@@ -1,5 +1,11 @@
 # Traefik Docker POC
 
+## Setup
+
+1. clone repo
+2. execute `mkcerts.sh` to setup local certificates, use whoami.docker.local as CN.
+3. execute `docker-compose up -d`
+
 ## Concepts
 
 1. run docker-compose to create a traefik container listening for http on port 9080
@@ -7,12 +13,6 @@
 3. put the whoami container behind /whoami URL path
 4. add SSL, traefik container listens on port 9443
 5. add SSL Redirect
-
-## Setup
-
-1. clone repo
-2. execute `mkcerts.sh` to setup local certificates, use whoami.docker.local as CN.
-3. execute `docker-compose up -d`
 
 ## Results
 
