@@ -22,7 +22,7 @@ services:
       - "8080:8080"
         # http port
       - "9080:80"
-        # https port - backends to 80
+        # https port - backends to 443
       - "9443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -37,7 +37,10 @@ services:
     container_name: whoami.docker.local
     labels:
       - traefik.enable=true
-      - traefik.http.routers.whoami.entrypoints=web,websecure
-      - traefik.http.routers.whoami.rule=HostRegexp(`whoami.docker.local`)"
-      - traefik.http.routers.whoami.rule=Path(`/whoami`)
-      - traefik.http.middlewares.whoami.stripprefix.prefixes=/whoami
+      - traefik.http.routers.whoami-http.entrypoints=web
+      - traefik.http.routers.whoami-http.rule=Host(`whoami.docker.local`) && PathPrefix(`/whoami`)
+      - traefik.http.middlewares.whoami-http.stripprefix.prefixes=/whoami
+      - traefik.http.routers.whoami-https.entrypoints=websecure
+      - traefik.http.routers.whoami-https.tls=true
+      - traefik.http.routers.whoami-https.rule=Host(`whoami.docker.local`) && PathPrefix(`/whoami`)
+      - traefik.http.middlewares.whoami-https.stripprefix.prefixes=/whoami

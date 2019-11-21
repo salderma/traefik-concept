@@ -57,8 +57,23 @@ X-Forwarded-Proto: http
 X-Forwarded-Server: 7f9f9786c434
 X-Real-Ip: 192.168.64.1
 ```
-4. failure, so far.
+4. success
 ```
-$ curl -k -H Host:whoami.docker.local https://127.0.0.1:9443/whoami
-404 page not found
+$ curl -k -H Host:whoami.docker.local https://127.0.0.1:9443/whoami/
+Hostname: 15fd271e4dd9
+IP: 127.0.0.1
+IP: 192.168.96.2
+RemoteAddr: 192.168.96.3:49958
+GET /whoami/ HTTP/1.1
+Host: whoami.docker.local
+User-Agent: curl/7.58.0
+Accept: */*
+Accept-Encoding: gzip
+X-Forwarded-For: 192.168.96.1
+X-Forwarded-Host: whoami.docker.local
+X-Forwarded-Port: 443
+X-Forwarded-Proto: https
+X-Forwarded-Server: c7b79a851f71
+X-Real-Ip: 192.168.96.1
+
 ```
