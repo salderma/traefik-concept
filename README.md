@@ -5,11 +5,12 @@
 1. clone repo
 2. execute `mkcerts.sh` to setup local certificates, use `whoami.docker.local` as CN.
 3. add hosts file entry for `whoami.docker.local` on `127.0.0.1`
-4. execute `CURRENT_UID=$(id -u):$(id -g) docker-compose up -d`  **NOTE** setting the UID variable so root won't own files in the `logs/` directory.
+4. execute `docker-compose up -d`
 
 ## Cleanup
 
-1. execute `CURRENT_UID=$(id -u):$(id -g) docker-compose down`
+1. execute `docker-compose down` to stop and cleanup the containers
+2. execute `sudo rm -f logs/*.log` to cleanup the logs
 
 ## Concepts
 
