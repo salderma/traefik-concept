@@ -77,3 +77,23 @@ X-Forwarded-Server: c7b79a851f71
 X-Real-Ip: 192.168.96.1
 
 ```
+5. success
+```
+$ curl -v -k -H Host:whoami.docker.local http://whoami.docker.local:9080/whoami/
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Connected to whoami.docker.local (127.0.0.1) port 9080 (#0)
+> GET /whoami/ HTTP/1.1
+> Host:whoami.docker.local
+> User-Agent: curl/7.58.0
+> Accept: */*
+> 
+< HTTP/1.1 302 Found
+< Location: https://whoami.docker.local:9443/whoami/
+< Date: Thu, 21 Nov 2019 19:28:44 GMT
+< Content-Length: 5
+< Content-Type: text/plain; charset=utf-8
+< 
+* Connection #0 to host whoami.docker.local left intact
+Found
+```

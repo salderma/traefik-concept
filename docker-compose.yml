@@ -16,8 +16,17 @@ services:
       - --entrypoints.traefik.address=:8080
       - --log.filePath=/logs/traefik.log
       - --log.level=debug
+      - --log.format=json
       - --accesslog=true
       - --accesslog.filepath=/logs/access.log
+      - --accesslog.format=json
+    labels:
+      # catchall http -> https redirect
+      - traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)
+      - traefik.http.routers.http-catchall.entrypoints=web
+      - traefik.http.routers.http-catchall.middlewares=redirect-to-https@docker
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.port=9443
     ports:
       - "8080:8080"
         # http port
@@ -37,9 +46,10 @@ services:
     container_name: whoami.docker.local
     labels:
       - traefik.enable=true
-      - traefik.http.routers.whoami-http.entrypoints=web
-      - traefik.http.routers.whoami-http.rule=Host(`whoami.docker.local`) && PathPrefix(`/whoami`)
-      - traefik.http.middlewares.whoami-http.stripprefix.prefixes=/whoami
+        # removing all the http router/middlewares since we will never see them.
+        #- traefik.http.routers.whoami-http.entrypoints=web
+        #- traefik.http.routers.whoami-http.rule=Host(`whoami.docker.local`) && PathPrefix(`/whoami`)
+        #- traefik.http.middlewares.whoami-http.stripprefix.prefixes=/whoami
       - traefik.http.routers.whoami-https.entrypoints=websecure
       - traefik.http.routers.whoami-https.tls=true
       - traefik.http.routers.whoami-https.rule=Host(`whoami.docker.local`) && PathPrefix(`/whoami`)
