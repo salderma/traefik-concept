@@ -3,6 +3,7 @@ version: '3'
 services:
   reverse-proxy:
     image: traefik:latest
+    user: ${CURRENT_UID}
     command:
       - --api.insecure=true
       - --providers.docker
@@ -43,6 +44,7 @@ services:
       - ./logs:/logs
   whoami:
     image: containous/whoami
+    user: ${CURRENT_UID}
     container_name: whoami.docker.local
     labels:
       - traefik.enable=true
