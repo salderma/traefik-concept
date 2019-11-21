@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  reverse-proxy:
+    image: traefik:latest
+    command:
+      - --api.insecure=true
+      - --providers.docker
+        # setup dynamic config directory as /config volume
+      - --providers.file.directory=/config
+      - --providers.file.watch=true
+        # setup http entrypoint on port 80
+      - --entrypoints.web.address=:80
+        # setup https entrypoint on port 9443
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.traefik.address=:8080
+      - --log.filePath=/logs/traefik.log
+      - --log.level=debug
+      - --accesslog=true
+      - --accesslog.filepath=/logs/access.log
+    ports:
+      - "8080:8080"
+        # http port
+      - "9080:80"
+        # https port - backends to 80
+      - "9443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+        # config volume from this repo as readonly
+      - ./config:/config:ro
+        # adding volume containing ssl certs
+      - ./certs:/certs:ro
+        # adding volume for log files
+      - ./logs:/logs
+  whoami:
+    image: containous/whoami
+    container_name: whoami.docker.local
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.whoami.entrypoints=web,websecure
+      - traefik.http.routers.whoami.rule=HostRegexp(`whoami.docker.local`)"
+      - traefik.http.routers.whoami.rule=Path(`/whoami`)
+      - traefik.http.middlewares.whoami.stripprefix.prefixes=/whoami
