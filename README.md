@@ -4,7 +4,7 @@
 
 1. clone repo
 2. execute `mkcerts.sh` to setup local certificates, use `whoami.docker.local` as CN.
-3. [OPTIONAL] add hosts file entry for `whoami.docker.local` on `127.0.0.1`
+3. add hosts file entry for `whoami.docker.local` on `127.0.0.1`
 3. execute `docker-compose up -d`
 
 ## Concepts
